@@ -1,7 +1,7 @@
 -- Made by Play2210
 
 if game.PlaceId ~= 6839171747 or game.ReplicatedStorage.GameData.Floor.Value ~= "Rooms" then
-	game.StarterGui:SetCore("SendNotification", { Title = "Invalid Place"; Text = "The game detected appears to not be rooms. Please execute this while in rooms!" })
+	game.StarterGui:SetCore("SendNotification", { Title = "Mã Game Không Phù Hợp"; Text = "Đây không phải là Rooms, Vui lòng thực thi tập lệnh ở Rooms" })
 	
 	local Sound = Instance.new("Sound")
 	Sound.Parent = game.SoundService
@@ -12,7 +12,7 @@ if game.PlaceId ~= 6839171747 or game.ReplicatedStorage.GameData.Floor.Value ~= 
 	
 	return
 elseif workspace:FindFirstChild("PathFindPartsFolder") then
-	game.StarterGui:SetCore("SendNotification", { Title = "Warning"; Text = "If you are having issues and the bot is broken, please contact me! geodude#2619" })
+	game.StarterGui:SetCore("SendNotification", { Title = "Chú Ý"; Text = "Nếu bạn gặp lỗi và bot bị hòng, làm ơn liên hệ với tôi @Play2210" })
 	
 	local Sound = Instance.new("Sound")
 	Sound.Parent = game.SoundService
