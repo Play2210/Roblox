@@ -114,7 +114,7 @@ function getPath()
 end
 
 LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
-    TextLabel.Text = "Room: "..math.clamp(LatestRoom.Value, 1,1000)
+    TextLabel.Text = "Phòng: "..math.clamp(LatestRoom.Value, 1,1000)
 
     if LatestRoom.Value ~= 1000 then
         LocalPlayer.DevComputerMovementMode = Enum.DevComputerMovementMode.Scriptable
