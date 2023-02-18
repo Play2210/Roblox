@@ -12,7 +12,7 @@ if game.PlaceId ~= 6839171747 or game.ReplicatedStorage.GameData.Floor.Value ~= 
 	
 	return
 elseif workspace:FindFirstChild("PathFindPartsFolder") then
-	game.StarterGui:SetCore("SendNotification", { Title = "Chú Ý"; Text = "Nếu bạn gặp lỗi và bot bị hòng, làm ơn liên hệ với tôi @Play2210" })
+	game.StarterGui:SetCore("SendNotification", { Title = "Chú Ý"; Text = "Nếu bạn gặp lỗi và bot bị hỏng, làm ơn liên hệ với tôi @Play2210" })
 	
 	local Sound = Instance.new("Sound")
 	Sound.Parent = game.SoundService
