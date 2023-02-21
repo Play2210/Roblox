@@ -3629,4 +3629,3 @@ normalmessage(
 	"Took "..(os.time() - POOPDOORS_START_TIME).."ms.", 
 	5
 )
-1
