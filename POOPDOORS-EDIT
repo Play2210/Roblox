@@ -110,7 +110,7 @@ function oldwarnmessage(title, text, timee)
 	)
 end
 
-local currentver = "1.6.1"
+local currentver = "1.7"
 local gui_data = nil
 local s,e = pcall(function()
 	gui_data = game:HttpGet(("https://raw.githubusercontent.com/mstudio45/poopdoors_edited/main/gui_data.json"), true)
@@ -473,7 +473,7 @@ task.spawn(function()
 	end	
 end)
 
-local avoidingYvalue = 25
+local avoidingYvalue = 23
 
 local flags = {
 	-- general
@@ -1012,7 +1012,7 @@ window_credits:AddButton({
 })
 
 task.spawn(function()
---	repeat task.wait(1) until flags.anticheatbypass == true
+	--	repeat task.wait(1) until flags.anticheatbypass == true
 
 	local nocliptoggle = window_player:AddToggle({
 		Name = "Noclip",
@@ -1055,7 +1055,7 @@ local clientglowbtn = window_player:AddToggle({
 			l.Brightness = 2
 			l.Parent = char.PrimaryPart
 
-			repeat task.wait() until not flags.light
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.light
 			l:Destroy() 
 		end
 	end
@@ -1087,7 +1087,7 @@ local fullbrightbtn = window_player:AddToggle({
 			doFullbright()
 
 			local coneee = game:GetService("Lighting").LightingChanged:Connect(doFullbright)
-			repeat task.wait() until not flags.fullbright
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.fullbright
 
 			coneee:Disconnect()
 			game:GetService("Lighting").Ambient = oldAmbient
@@ -1110,7 +1110,7 @@ if fireproximityprompt then
 				fireproximityprompt(p)
 			end)
 
-			repeat task.wait() until not flags.instapp
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.instapp
 			holdconnect:Disconnect()
 		end
 	})
@@ -1267,7 +1267,7 @@ local espdoorsbtn = window_esp:AddToggle({
 				setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 			end
 
-			repeat task.wait() until not flags.espdoors
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.espdoors
 			addconnect:Disconnect()
 
 			for i,v in pairs(esptable.doors) do
@@ -1285,32 +1285,21 @@ local fakeespdoorsbtn = window_esp:AddToggle({
 
 		if val then
 			local function setup(room)
-				task.wait(.1)
-				local door = nil
-				local okvaluechange = nil
-
-				for _,v in pairs(room:GetDescendants()) do
-					if v.Name == "DoorFake" and v:FindFirstChild("Door") then
-						door = v.Door
-						break
-					end
+				for _,v in pairs(room:GetDescendants()) do 
+					task.spawn(function()
+						if v.Name == "DoorFake" then
+							if v:FindFirstChild("Door") then
+								if table.find(esptableinstances, v.Door) then
+									return
+								end
+								
+								local h = esp(v.Door,Color3.fromRGB(170, 0, 0),v.Door,"Fake Door (Dupe)")
+								table.insert(esptable.fakedoors,h)
+								table.insert(esptableinstances, v.Door)
+							end
+						end 
+					end)
 				end
-
-				--	if table.find(esptableinstances, door) then
-				--	return
-				--end
-
-				task.wait(0.1)
-				local h = esp(door,Color3.fromRGB(170, 0, 0),door,"Fake Door (Dupe)")
-				table.insert(esptable.fakedoors,h)
-				table.insert(esptableinstances, door)
-
-				okvaluechange = game:GetService("ReplicatedStorage").GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
-					if tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value) ~= room.Name then
-						h.delete()
-						okvaluechange:Disconnect()
-					end
-				end)
 			end
 
 			local addconnect
@@ -1319,15 +1308,13 @@ local fakeespdoorsbtn = window_esp:AddToggle({
 			end)
 
 			for i,room in pairs(workspace.CurrentRooms:GetChildren()) do
-				task.spawn(function()
-					setup(room)
-				end) 
+				setup(room)
 				task.wait()
 			end
 
 			setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 
-			repeat task.wait() until not flags.fakeespdoors
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.fakeespdoors
 			addconnect:Disconnect()
 
 			for i,v in pairs(esptable.fakedoors) do
@@ -1345,72 +1332,64 @@ local espkeysbtn = window_esp:AddToggle({
 
 		if val then
 			local function check(v, room)
+				task.wait()
 				if table.find(esptableinstances, v) then
 					return
 				end
 
 				if v:IsA("Model") then
-					local okvaluechange = nil
-					task.wait(0.1)
-					if v.Name == "KeyObtain" or v.Name == "ElectricalKeyObtain" then
-						if v.Name == "KeyObtain" then
-							local hitbox = v:WaitForChild("Hitbox")
-							local parts = hitbox:GetChildren()
-							table.remove(parts,table.find(parts,hitbox:WaitForChild("PromptHitbox")))
+					if v.Name == "ElectricalKeyObtain" then
+						local hitbox = v:FindFirstChild("Hitbox")
+						local parts = hitbox:GetChildren()
+						table.remove(parts,table.find(parts,v:WaitForChild("PromptHitbox")))
 
-							local h = esp(parts,Color3.fromRGB(90,255,40),hitbox,"Key")
-							table.insert(esptable.keys,h)
-							table.insert(esptableinstances, v)
-							okvaluechange = game:GetService("ReplicatedStorage").GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
-								if tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value) ~= room.Name then
-									h.delete()
-									okvaluechange:Disconnect()
-								end
-							end)
-						end
-						if v.Name == "ElectricalKeyObtain" then
-							local hitbox = v:WaitForChild("Hitbox")
-							local parts = hitbox:GetChildren()
-							table.remove(parts,table.find(parts,v:WaitForChild("PromptHitbox")))
+						local h = esp(parts,Color3.fromRGB(90,255,40),hitbox,"Electrical Key")
+						table.insert(esptable.keys,h)
+						table.insert(esptableinstances, v)
+					end
+					if v.Name == "KeyObtain" then
+						local hitbox = v:FindFirstChild("Hitbox")
+						local parts = hitbox:GetChildren()
+						table.remove(parts,table.find(parts,hitbox:WaitForChild("PromptHitbox")))
 
-							local h = esp(parts,Color3.fromRGB(90,255,40),hitbox,"Electrical Key")
-							table.insert(esptable.keys,h)
-							table.insert(esptableinstances, v)
-							okvaluechange = game:GetService("ReplicatedStorage").GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
-								if tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value) ~= room.Name then
-									h.delete()
-									okvaluechange:Disconnect()
-								end
-							end)
-						end
-					elseif v.Name == "LeverForGate" then
+						local h = esp(parts,Color3.fromRGB(90,255,40),hitbox,"Key")
+						table.insert(esptable.keys,h)
+						table.insert(esptableinstances, v)
+					end;if v.Name == "LeverForGate" then
 						local h = esp(v,Color3.fromRGB(90,255,40),v.PrimaryPart,"Lever")
 						table.insert(esptable.keys,h)
 						table.insert(esptableinstances, v)
 						v.PrimaryPart:WaitForChild("SoundToPlay").Played:Connect(function()
 							h.delete()
 						end) 
-						okvaluechange = game:GetService("ReplicatedStorage").GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
-							if tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value) ~= room.Name then
-								h.delete()
-								okvaluechange:Disconnect()
-							end
-						end)
 					end
 				end
 			end
 
 			local function setup(room)
-				task.wait(.1)
-				local assets = room:WaitForChild("Assets")
+				local assets = room:FindFirstChild("Assets")
 
-				assets.DescendantAdded:Connect(function(v)
-					check(v, room) 
-				end)
+				if room then
+					if assets then
+						assets.DescendantAdded:Connect(function(v)
+							check(v, room) 
+						end)
+					else
+						room.DescendantAdded:Connect(function(v)
+							check(v, room) 
+						end)
+					end
+				end
 
-				for i,v in pairs(assets:GetDescendants()) do
-					check(v, room)
-				end 
+				if assets then
+					for i,v in pairs(assets:GetChildren()) do --:GetDescendants()) do
+						check(v, room)
+					end 
+				else
+					for i,v in pairs(room:GetDescendants()) do
+						check(v, room)
+					end 
+				end
 			end
 
 			local addconnect
@@ -1419,17 +1398,12 @@ local espkeysbtn = window_esp:AddToggle({
 			end)
 
 			for i,room in pairs(workspace.CurrentRooms:GetChildren()) do
-				if room:FindFirstChild("Assets") then
-					setup(room) 
-				end
-				task.wait()
+				setup(room)
 			end
 
-			if workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:FindFirstChild("Assets") then
-				setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
-			end
+			setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 
-			repeat task.wait() until not flags.espkeys
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.espkeys
 			addconnect:Disconnect()
 
 			for i,v in pairs(esptable.keys) do
@@ -1476,7 +1450,7 @@ local espitemsbtn = window_esp:AddToggle({
 					end
 
 					task.spawn(function()
-						repeat task.wait() until not flags.espitems
+						repeat task.wait() until POOPDOORSLOADED == false or not flags.espitems
 						subaddcon:Disconnect()  
 					end) 
 				end 
@@ -1498,7 +1472,7 @@ local espitemsbtn = window_esp:AddToggle({
 				setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 			end
 
-			repeat task.wait() until not flags.espitems
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.espitems
 			addconnect:Disconnect()
 
 			for i,v in pairs(esptable.items) do
@@ -1567,7 +1541,7 @@ local espbooksbtn = window_esp:AddToggle({
 				setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 			end
 
-			repeat task.wait() until not flags.espbooks
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.espbooks
 			addconnect:Disconnect()
 
 			for i,v in pairs(esptable.books) do
@@ -1577,7 +1551,7 @@ local espbooksbtn = window_esp:AddToggle({
 	end
 })
 buttons.espbooks = espbooksbtn
-local entitynames = {"RushMoving","AmbushMoving","Snare","A60","A120"}
+local entitynames = {"RushMoving","AmbushMoving","Eyes","Snare","A60","A120"}
 local esprusbtn = window_esp:AddToggle({
 	Name = "Entity ESP",
 	Value = false,
@@ -1588,15 +1562,22 @@ local esprusbtn = window_esp:AddToggle({
 			local addconnect
 			addconnect = workspace.ChildAdded:Connect(function(v)
 				if table.find(entitynames,v.Name) then
-					task.wait(0.1)
-
+					task.wait(.1)
 					local h = esp(v,Color3.fromRGB(255,25,25),v.PrimaryPart,v.Name:gsub("Moving",""))
 					table.insert(esptable.entity,h)
 				end
 			end)
-
+			
+			for _,v in pairs(workspace:GetChildren()) do
+				if table.find(entitynames,v.Name) then
+					task.wait(.1)
+					local h = esp(v,Color3.fromRGB(255,25,25),v.PrimaryPart,v.Name:gsub("Moving",""))
+					table.insert(esptable.entity,h)
+				end
+			end
+			
 			local function setup(room)
-				task.wait(.1)
+				task.wait()
 				if room.Name == "50" or room.Name == "100" then
 					local figuresetup = room:WaitForChild("FigureSetup")
 
@@ -1636,12 +1617,11 @@ local esprusbtn = window_esp:AddToggle({
 
 			for i,v in pairs(workspace.CurrentRooms:GetChildren()) do
 				setup(v) 
-				task.wait()
 			end
 
 			setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 
-			repeat task.wait() until not flags.esprush
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.esprush
 			addconnect:Disconnect()
 			roomconnect:Disconnect()
 
@@ -1660,66 +1640,63 @@ local esplockerbrn = window_esp:AddToggle({
 
 		if val then
 			local function check(v, room)
-				if table.find(esptableinstances, v) then
-					return
-				end
-
-				if v:IsA("Model") then
-					task.wait()
-					if table.find(esptableinstances, v) then
-						return
-					end
-
-					local okvaluechange = nil
-					if v.Name == "Wardrobe" then
-						pcall(function()
-							local h = esp(v.PrimaryPart,Color3.fromRGB(145,100,25),v.PrimaryPart,"Closet")
-							table.insert(esptable.lockers,h) 
-							table.insert(esptableinstances, v)
-							okvaluechange = game:GetService("ReplicatedStorage").GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
-								if tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value) ~= room.Name then
-									h.delete()
-									okvaluechange:Disconnect()
-								end
-							end)
-						end)
-					elseif (v.Name == "Rooms_Locker" or v.Name == "Rooms_Locker_Fridge") then
-						pcall(function()
-							local h = esp(v.PrimaryPart,Color3.fromRGB(145,100,25),v.PrimaryPart,"Locker")
-							table.insert(esptable.lockers,h) 
-							table.insert(esptableinstances, v)
-							okvaluechange = game:GetService("ReplicatedStorage").GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
-								if tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value) ~= room.Name then
-									h.delete()
-									okvaluechange:Disconnect()
-								end
-							end)
-						end)
-					end
+				task.wait()
+				--local okvaluechange = nil
+				if v.Name == "Wardrobe" then
+					local h = esp(v.PrimaryPart,Color3.fromRGB(145,100,25),v.PrimaryPart,"Closet")
+					table.insert(esptable.lockers,h) 
+					table.insert(esptableinstances, v)
+					--okvaluechange = game:GetService("ReplicatedStorage").GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
+					--	if tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value) ~= room.Name then
+					--		h.delete()
+					--		okvaluechange:Disconnect()
+					--	end
+					--end)
+				elseif v.Name == "Rooms_Locker" or v.Name == "Rooms_Locker_Fridge" then
+					local h = esp(v.PrimaryPart,Color3.fromRGB(145,100,25),v.PrimaryPart,"Locker")
+					table.insert(esptable.lockers,h) 
+					table.insert(esptableinstances, v)
+					--okvaluechange = game:GetService("ReplicatedStorage").GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
+					--	if tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value) ~= room.Name then
+					--		h.delete()
+					--		okvaluechange:Disconnect()
+					--	end
+					--end)
 				end
 			end
 
 			local function setup(room)
-				task.wait()
-				local assets = room--:FindFirstChild("Assets")
-
+				local assets = room:WaitForChild("Assets")
+				
 				if assets then
 					local subaddcon
 					subaddcon = assets.DescendantAdded:Connect(function(v)
-						task.wait()
 						check(v, room) 
 					end)
 
 					for i,v in pairs(assets:GetDescendants()) do
 						check(v, room)
-						task.wait()
 					end
 
 					task.spawn(function()
-						repeat task.wait() until not flags.esplocker
+						repeat task.wait() until POOPDOORSLOADED == false or not flags.esplocker
+						subaddcon:Disconnect()  
+					end)
+				else
+					local subaddcon
+					subaddcon = room.DescendantAdded:Connect(function(v)
+						check(v, room) 
+					end)
+
+					for i,v in pairs(room:GetDescendants()) do
+						check(v, room)
+					end
+
+					task.spawn(function()
+						repeat task.wait() until POOPDOORSLOADED == false or not flags.esplocker
 						subaddcon:Disconnect()  
 					end) 
-				end 
+				end
 			end
 
 			local addconnect
@@ -1735,7 +1712,7 @@ local esplockerbrn = window_esp:AddToggle({
 				setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value+1)])
 			end
 
-			repeat task.wait() until not flags.esplocker
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.esplocker
 			addconnect:Disconnect()
 
 			for i,v in pairs(esptable.lockers) do
@@ -1754,12 +1731,12 @@ local espchesbtn = window_esp:AddToggle({
 
 		if val then
 			local function check(v, room)
+				task.wait()
 				if table.find(esptableinstances, v) then
 					return
 				end
 
 				if v:IsA("Model") then
-					task.wait(0.1)
 					local okvaluechange = nil
 					if v.Name == "ChestBox" then
 						warn(v.Name)
@@ -1798,7 +1775,7 @@ local espchesbtn = window_esp:AddToggle({
 				end
 
 				task.spawn(function()
-					repeat task.wait() until not flags.espchest
+					repeat task.wait() until POOPDOORSLOADED == false or not flags.espchest
 					subaddcon:Disconnect()  
 				end)  
 			end
@@ -1819,7 +1796,7 @@ local espchesbtn = window_esp:AddToggle({
 				setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 			end
 
-			repeat task.wait() until not flags.espchest
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.espchest
 			addconnect:Disconnect()
 
 			for i,v in pairs(esptable.chests) do
@@ -1877,7 +1854,7 @@ local esphumansbtn = window_esp:AddToggle({
 				personesp(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 			end
 
-			repeat task.wait() until not flags.esphumans
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.esphumans
 			addconnect:Disconnect()
 
 			for i,v in pairs(esptable.people) do
@@ -1927,7 +1904,7 @@ local espgoldbtn = window_esp:AddToggle({
 				end
 
 				task.spawn(function()
-					repeat task.wait() until not flags.espchest
+					repeat task.wait() until POOPDOORSLOADED == false or not flags.espchest
 					subaddcon:Disconnect()  
 				end)  
 			end
@@ -1948,7 +1925,7 @@ local espgoldbtn = window_esp:AddToggle({
 				setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 			end
 
-			repeat task.wait() until not flags.espgold
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.espgold
 			addconnect:Disconnect()
 
 			for i,v in pairs(esptable.gold) do
@@ -2011,7 +1988,7 @@ local noseekbtn = window_entities:AddToggle({
 				end
 			end)
 
-			repeat task.wait() until not flags.noseek
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.noseek
 			addconnect:Disconnect()
 		end
 	end
@@ -2028,7 +2005,7 @@ local noscreechbtn = window_entities:AddToggle({
 		if val then
 			if not ScreechModule then ScreechModule = plr.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules:FindFirstChild("Screech") end
 			ScreechModule.Parent = nil
-			repeat task.wait() until not flags.noscreech
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.noscreech
 			ScreechModule.Parent = plr.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules
 		end	
 	end
@@ -2045,7 +2022,7 @@ local notimothybtn = window_entities:AddToggle({
 		if val then
 			if not SpiderJumpscareModule then SpiderJumpscareModule = plr.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules:FindFirstChild("SpiderJumpscare") end
 			SpiderJumpscareModule.Parent = nil
-			repeat task.wait() until not flags.notimothy
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.notimothy
 			SpiderJumpscareModule.Parent = plr.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules
 		end	
 	end
@@ -2081,14 +2058,14 @@ else
 	warnmessage("POOPDOORS EDITED v"..currentver, "You need to have hookmetamethod and newcclosure and getnamecallmethod functions for 'always win heartbeat'.", 7)
 end
 
-local avoidrushambushbtn = window_entities:AddToggle({
+--[[local avoidrushambushbtn = window_entities:AddToggle({
 	Name = "Avoid Rush & Ambush",
 	Value = false,
 	Callback = function(val, oldval)
 		flags.avoidrushambush = val
 	end
 })
-buttons.avoidrushambush = avoidrushambushbtn
+buttons.avoidrushambush = avoidrushambushbtn--]]
 workspace.ChildAdded:Connect(function(inst)
 	spawn(function()
 		if table.find(entitynames, inst.Name) and flags.hintrush == true then
@@ -2099,33 +2076,35 @@ workspace.ChildAdded:Connect(function(inst)
 					warnmessage("ENTITIES", inst.Name:gsub("Moving","").." is coming.", "Hide!", 0, "12351008553", inst)
 				else
 					task.wait(.1)
-					if plr:DistanceFromCharacter(inst:GetPivot().Position) < 300 and inst:IsDescendantOf(workspace) then
+					if plr:DistanceFromCharacter(inst:GetPivot().Position) < 375 and inst:IsDescendantOf(workspace) then
 						warnmessage("ENTITIES", inst.Name:gsub("Moving","").." is coming.", "Hide!", 0, "0", inst)
 					end
 				end
 			else
-				if flags.avoidrushambush == false then
-					repeat task.wait() until plr:DistanceFromCharacter(inst:GetPivot().Position) < 500 or not inst:IsDescendantOf(workspace)
+				--if flags.avoidrushambush == false then
+				repeat task.wait() until plr:DistanceFromCharacter(inst:GetPivot().Position) < 375 or not inst:IsDescendantOf(workspace)
 
-					if inst:IsDescendantOf(workspace) then
-						if inst.Name:gsub("Moving","") == "Rush" then
-							warnmessage("ENTITIES", inst.Name:gsub("Moving","").." is coming.", "Hide!", 0, "11102256553", inst)
-						elseif inst.Name:gsub("Moving","") == "Ambush" then
-							warnmessage("ENTITIES", inst.Name:gsub("Moving","").." is coming.", "Hide!", 0, "10938726652", inst)
-						else
-							warnmessage("ENTITIES", inst.Name:gsub("Moving","").." is coming.", "Hide!", 0, "0", inst)
-						end
+				if inst:IsDescendantOf(workspace) then
+					if inst.Name:gsub("Moving","") == "Rush" then
+						warnmessage("ENTITIES", inst.Name:gsub("Moving","").." is coming.", "Hide!", 0, "11102256553", inst)
+					elseif inst.Name:gsub("Moving","") == "Ambush" then
+						warnmessage("ENTITIES", inst.Name:gsub("Moving","").." is coming.", "Hide!", 0, "10938726652", inst)
+					elseif inst.Name:gsub("Moving","") == "Eyes" then
+						warnmessage("ENTITIES", inst.Name:gsub("Moving","").." spawned.", "Don't look at it!", 10, "10865377903")
+					else
+						warnmessage("ENTITIES", inst.Name:gsub("Moving","").." is coming.", "Hide!", 0, "0", inst)
+					end
 						--inst.Destroying:Wait()
 						--warnmessage("ENTITIES", "It's now completely safe to leave the hiding spot.", 7)
-					end
+				--	end
 				end
 			end
 		end
 	end)
 
-	if flags.avoidrushambush == true then
+	--[[if flags.avoidrushambush == true then
 		if inst.Name == "RushMoving" or inst.Name == "AmbushMoving" then
-			repeat task.wait() until plr:DistanceFromCharacter(inst:GetPivot().Position) < 500 or not inst:IsDescendantOf(workspace)
+			repeat task.wait() until plr:DistanceFromCharacter(inst:GetPivot().Position) < 400 or not inst:IsDescendantOf(workspace)
 
 			if inst:IsDescendantOf(workspace) then
 				if inst.Name:gsub("Moving","") == "Rush" then
@@ -2138,7 +2117,15 @@ workspace.ChildAdded:Connect(function(inst)
 
 				local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 				local oldwalkspeed = hum.WalkSpeed
-
+				
+				local pos = CFrame.new(
+					OldPos + Vector3.new(
+						0,
+						avoidingYvalue,
+						0
+					) 
+				)
+				
 				local function getrecentroom(index)
 					local rooms = workspace.CurrentRooms:GetChildren() 
 					table.sort(rooms,function(a,b)
@@ -2147,31 +2134,26 @@ workspace.ChildAdded:Connect(function(inst)
 
 					return rooms[index]
 				end
-				--local room = getrecentroom(2)
-				--local door = room:WaitForChild("Door")
-				
+				local room = getrecentroom(2)
+				local door = room:WaitForChild("Door")
+
 				local CFrameValue = Instance.new("CFrameValue")
 				CFrameValue.Value = game.Players.LocalPlayer.Character:GetPivot()
-
 				CFrameValue:GetPropertyChangedSignal("Value"):connect(function()
-					game.Players.LocalPlayer.Character:PivotTo(CFrameValue.Value)
+					--game.Players.LocalPlayer.Character:PivotTo(CFrameValue.Value)
+					game.Players.LocalPlayer.Character.Collision.CFrame = CFrameValue.Value
 				end)
-
-				local tween = game:GetService("TweenService"):Create(CFrameValue, TweenInfo.new(1.5), {Value = CFrame.new(OldPos + Vector3.new(0,avoidingYvalue,0))})--CFrame.new(door.Door.Position + Vector3.new(0,avoidingYvalue,0))})
+				local tween = game:GetService("TweenService"):Create(CFrameValue, TweenInfo.new(1.5), {
+					Value = pos
+				})
 				tween:Play()
-				
+
 				local con
 				tween.Completed:connect(function()
 					CFrameValue:Destroy() 
 					con = game:GetService("RunService").RenderStepped:Connect(function()
-						--	hum.WalkSpeed = 0
-						--if door then
-						game.Players.LocalPlayer.Character:MoveTo(OldPos + Vector3.new(0,avoidingYvalue,0))--door.Door.Position + Vector3.new(0,avoidingYvalue,0))
-						game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-						--else
-						--	game.Players.LocalPlayer.Character:MoveTo(OldPos + Vector3.new(0,avoidingYvalue,0))
-						--end
-						--game.Players.LocalPlayer.Character:MoveTo(OldPos + Vector3.new(0,125,0))
+						--game.Players.LocalPlayer.Character:PivotTo(pos)
+						game.Players.LocalPlayer.Character.Collision.CFrame = pos
 					end)
 				end)
 
@@ -2187,11 +2169,11 @@ workspace.ChildAdded:Connect(function(inst)
 				tween:Play()
 				tween.Completed:connect(function()
 					CFrameValue:Destroy() 
-					game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+					--game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 				end)
 			end
 		end
-	end
+	end--]]
 end)
 
 local noseekarmsfirebtn = window_roomsdoors:AddToggle({
@@ -2342,6 +2324,23 @@ else
 	oldwarnmessage("POOPDOORS EDITED v"..currentver, "You need to have fireproximityprompt function for 'skip room'.", 7)
 end
 
+local elevatorbreakerbox = false
+window_roomsdoors:AddLabel({ Name = "Press this only if you have the\nbreaker box minigame on." })
+window_roomsdoors:AddButton({
+	Name = "Complete Elevator Breaker Box",
+	Callback = function()
+		if elevatorbreakerbox == false then
+			elevatorbreakerbox = true
+			oldnormalmessage("ELEVATOR BREAKER BOX", "Trying to comeplete breaker box. Please wait...",5)
+			game:GetService("ReplicatedStorage").EntityInfo.EBF:FireServer()
+			for i = 0, 50 do game:GetService("ReplicatedStorage").EntityInfo.EBF:FireServer()task.wait(.1) end
+			game:GetService("ReplicatedStorage").EntityInfo.EBF:FireServer()
+			oldnormalmessage("ELEVATOR BREAKER BOX", "If it didn't complete breaker box, try going to the elevator.\nIf that didn't work try it again.",5)		
+			elevatorbreakerbox = false
+		end
+	end
+})
+
 local nogatesbtn = window_misc:AddToggle({
 	Name = "Delete Gates",
 	Value = false,
@@ -2386,7 +2385,7 @@ local nogatesbtn = window_misc:AddToggle({
 				end
 			end)
 
-			repeat task.wait() until not flags.nogates
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.nogates
 			addconnect:Disconnect()
 		end
 	end
@@ -2439,7 +2438,7 @@ local nopuzzlebtn = window_misc:AddToggle({
 				end
 			end)
 
-			repeat task.wait() until not flags.nopuzzle
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.nopuzzle
 			addconnect:Disconnect()
 		end
 	end
@@ -2468,7 +2467,7 @@ local noskeledoorsbtn = window_misc:AddToggle({
 				end 
 			end)
 
-			repeat task.wait() until not flags.noskeledoors
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.noskeledoors
 			addconnect:Disconnect()
 		end
 	end
@@ -2529,7 +2528,7 @@ local getcodebtn = window_misc:AddToggle({
 				end
 			end)
 
-			repeat task.wait() until not flags.getcode
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.getcode
 			addconnect:Disconnect()
 		end
 	end
@@ -2564,7 +2563,7 @@ local roomsnolockbtn = window_misc:AddToggle({
 				check(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 			end)
 
-			repeat task.wait() until not flags.roomsnolock
+			repeat task.wait() until POOPDOORSLOADED == false or not flags.roomsnolock
 			addconnect:Disconnect()
 		end
 	end
@@ -2688,35 +2687,39 @@ if fireproximityprompt then
 									end)
 								end
 							elseif v.Name == "Green_Herb" then
-								local prompt = v:WaitForChild("HerbPrompt")
-								local okcanckl = 0
-								task.spawn(function()
-									repeat task.wait(0.1)
-										--pcall(function()
-										local posok = false
-										pcall(function()
-											local posoks, posoke = pcall(function()
-												posok = (plr:DistanceFromCharacter(v.PrimaryPart.Position) <= 12)
-											end)
-											if posoke then
-												local part
-												for _,v in pairs(v:GetChildren()) do
-													local hasProperty = pcall(function() local t = v["Position"] end)
-													if hasProperty then
-														part = v
-														break
+								local plant = v:WaitForChild("Plant")
+
+								if plant then
+									local prompt = plant:WaitForChild("HerbPrompt")
+									local okcanckl = 0
+									task.spawn(function()
+										repeat task.wait(0.1)
+											--pcall(function()
+											local posok = false
+											pcall(function()
+												local posoks, posoke = pcall(function()
+													posok = (plr:DistanceFromCharacter(v.PrimaryPart.Position) <= 12)
+												end)
+												if posoke then
+													local part
+													for _,v in pairs(v:GetChildren()) do
+														local hasProperty = pcall(function() local t = v["Position"] end)
+														if hasProperty then
+															part = v
+															break
+														end
 													end
+													posok = (plr:DistanceFromCharacter(part.Position) <= 12)
 												end
-												posok = (plr:DistanceFromCharacter(part.Position) <= 12)
-											end
-										end)
-										if posok then
-											fireproximityprompt(prompt) 
-											okcanckl += 1
-										end 
-										--end)
-									until prompt:GetAttribute("Interactions") or not flags.draweraura or okcanckl > 35
-								end)
+											end)
+											if posok then
+												fireproximityprompt(prompt) 
+												okcanckl += 1
+											end 
+											--end)
+										until prompt:GetAttribute("Interactions") or not flags.draweraura or okcanckl > 35
+									end)
+								end
 							elseif v.Name == "PickupItem" then
 								if game:GetService("ReplicatedStorage").GameData.LatestRoom.Value == 51 or game:GetService("ReplicatedStorage").GameData.LatestRoom.Value == 52 then
 									return
@@ -2908,7 +2911,7 @@ if fireproximityprompt then
 					end
 
 					task.spawn(function()
-						repeat task.wait() until not flags.draweraura
+						repeat task.wait() until POOPDOORSLOADED == false or not flags.draweraura
 						subaddcon:Disconnect() 
 					end)
 				end
@@ -2925,7 +2928,7 @@ if fireproximityprompt then
 				end
 				setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 
-				repeat task.wait() until not flags.draweraura
+				repeat task.wait() until POOPDOORSLOADED == false or not flags.draweraura
 				addconnect:Disconnect()
 			end
 		end
@@ -2992,7 +2995,7 @@ if fireproximityprompt then
 					end
 
 					task.spawn(function()
-						repeat task.wait() until not flags.bookcollecter
+						repeat task.wait() until POOPDOORSLOADED == false or not flags.bookcollecter
 						subaddcon:Disconnect() 
 					end)
 				end
@@ -3014,7 +3017,7 @@ if fireproximityprompt then
 					setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 					--	end
 
-					repeat task.wait() until not flags.bookcollecter
+					repeat task.wait() until POOPDOORSLOADED == false or not flags.bookcollecter
 					addconnect:Disconnect()
 				end
 			end
@@ -3082,7 +3085,7 @@ if fireproximityprompt then
 					end
 
 					task.spawn(function()
-						repeat task.wait() until not flags.breakercollecter
+						repeat task.wait() until POOPDOORSLOADED == false or not flags.breakercollecter
 						subaddcon:Disconnect() 
 					end)
 				end
@@ -3104,7 +3107,7 @@ if fireproximityprompt then
 					setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 					--	end
 
-					repeat task.wait() until not flags.breakercollecter
+					repeat task.wait() until POOPDOORSLOADED == false or not flags.breakercollecter
 					addconnect:Disconnect()
 				end
 			end
@@ -3173,7 +3176,7 @@ if fireproximityprompt then
 					end
 
 					task.spawn(function()
-						repeat task.wait() until not flags.autopulllever
+						repeat task.wait() until POOPDOORSLOADED == false or not flags.autopulllever
 						subaddcon:Disconnect() 
 					end)
 				end
@@ -3193,7 +3196,7 @@ if fireproximityprompt then
 					setup(workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)])
 					--	end
 
-					repeat task.wait() until not flags.autopulllever
+					repeat task.wait() until POOPDOORSLOADED == false or not flags.autopulllever
 					addconnect:Disconnect()
 				end
 			end
@@ -3260,7 +3263,7 @@ if syn then
 				game:GetService("TeleportService"):Teleport(6516141723, game:GetService("Players").LocalPlayer)
 			end
 		})
-	end
+	end--]]
 elseif queue_on_teleport then
 	window_experimentals:AddButton({
 		Name = "Start a new solo run",
@@ -3323,7 +3326,7 @@ if game.ReplicatedStorage:WaitForChild("GameData"):WaitForChild("Floor").Value =
 				if not A90Module then A90Module = plr.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules:FindFirstChild("A90") end
 				if A90Module then
 					A90Module.Parent = nil
-					repeat task.wait() until not flags.noa90
+					repeat task.wait() until POOPDOORSLOADED == false or not flags.noa90
 					A90Module.Parent = plr.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Modules
 				end
 			end
@@ -3612,14 +3615,18 @@ window_guisettings:AddButton({
 	end
 })
 
-if game:GetService("UserInputService").TouchEnabled and not game:GetService("UserInputService").KeyboardEnabled and not game:GetService("UserInputService").MouseEnabled then
+local mobiletoggles,mobiletoggleerr=pcall(function()
+local platform=game:GetService("UserInputService"):GetPlatform()
+if platform == Enum.Platform.Android or platform == Enum.Platform.IOS then --ame:GetService("UserInputService").TouchEnabled and not game:GetService("UserInputService").KeyboardEnabled and not game:GetService("UserInputService").MouseEnabled then
 	--local DeviceSize = workspace.CurrentCamera.ViewportSize;
-	local MobileToggle = {};MobileToggle["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"));MobileToggle["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;MobileToggle["ToggleButton"] = Instance.new("TextButton", MobileToggle["1"]);MobileToggle["ToggleButton"]["TextWrapped"] = true;MobileToggle["ToggleButton"]["BorderSizePixel"] = 0;MobileToggle["ToggleButton"]["TextScaled"] = true;MobileToggle["ToggleButton"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);MobileToggle["ToggleButton"]["TextColor3"] = Color3.fromRGB(0, 0, 0);MobileToggle["ToggleButton"]["Size"] = UDim2.new(0.049780379980802536, 0, 0.08735332638025284, 0);MobileToggle["ToggleButton"]["Name"] = [[Tbtn]];MobileToggle["ToggleButton"]["Text"] = [[Toggle POOPDOORS EDITED]];MobileToggle["ToggleButton"]["Font"] = Enum.Font.FredokaOne;MobileToggle["ToggleButton"]["Position"] = UDim2.new(0.872797429561615, 0, 0.10329286754131317, 0);
+	local MobileToggle = {};MobileToggle["1"] = Instance.new("ScreenGui", game:GetService("CoreGui"));MobileToggle["1"]["DisplayOrder"] = 9999;MobileToggle["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;MobileToggle["ToggleButton"] = Instance.new("TextButton", MobileToggle["1"]);MobileToggle["ToggleButton"]["TextWrapped"] = true;MobileToggle["ToggleButton"]["BorderSizePixel"] = 0;MobileToggle["ToggleButton"]["TextScaled"] = true;MobileToggle["ToggleButton"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);MobileToggle["ToggleButton"]["TextColor3"] = Color3.fromRGB(0, 0, 0);MobileToggle["ToggleButton"]["Size"] = UDim2.new(0.049780379980802536, 0, 0.08735332638025284, 0);MobileToggle["ToggleButton"]["Name"] = [[Tbtn]];MobileToggle["ToggleButton"]["Text"] = [[Toggle POOPDOORS EDITED]];MobileToggle["ToggleButton"]["Font"] = Enum.Font.FredokaOne;MobileToggle["ToggleButton"]["Position"] = UDim2.new(0.872797429561615, 0, 0.10329286754131317, 0);
 	MobileToggle.ToggleButton.MouseButton1Click:Connect(function() togglegui() end)
 end
+end)
+if mobiletoggleerr then print(mobiletoggleerr) end
 
 task.spawn(function()
-	while WaitUntilTerminated() do task.wait() end
+	while WaitUntilTerminated() do task.wait(1) end
 	closegui()
 end)
 
