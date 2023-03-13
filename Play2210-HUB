@@ -10,10 +10,13 @@ UI:Button("Anti AFK", "Click Once only !", function()
 end)
 
 UI:Button("Auto A-1000 ( Doors )", "Click Once only !", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Play2210/Roblox/main/Auto-A1000"))()
+    if game.PlaceId == 6839171747 then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Play2210/Roblox/main/Auto-A1000"))()
+    end
 end)
 
 UI:Button("Bring All ( Flag Wars )", "Click Once only !", function()
+    if game.PlaceId == 3214114884 then
     local currPlayer = game:GetService("Players").LocalPlayer
         local servPlayer = game:GetService("Players")
         
@@ -35,6 +38,7 @@ UI:Button("Bring All ( Flag Wars )", "Click Once only !", function()
             end
         end
         end
+    end
 end)
 
 UI:Button("Click TP Tool", "Click Once only !", function()
@@ -90,19 +94,25 @@ UI:Button("Click + Ctrl TP", "Click Once only !", function()
 end)
 
 UI:Button("Doors Hardcore ( Doors )", "Click Once only !", function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/plamen6789/HardcoreScriptDOORS/main/HardcoreModeScript'))()
+    if game.PlaceId == 6839171747 then
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/plamen6789/HardcoreScriptDOORS/main/HardcoreModeScript'))()
+    end
 end)
 
 UI:Button("Doors EntitySpawner ( Doors )", "Click Once only !", function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI'))()
+    if game.PlaceId == 6839171747 then
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI'))()
+    end
 end)
 
 UI:Button("Doors TerminalVibes ( Doors )", "Click Once only !", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Play2210/Roblox/main/OminousVibes-Exploit"))()
+    if game.PlaceId == 6839171747 then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Play2210/Roblox/main/OminousVibes-Exploit"))()
+    end
 end)
 
 UI:Button("Doors ACBypass ( Doors )", "Click Once only !", function()
-        if game.PlaceId == 6839171747 then
+    if game.PlaceId == 6839171747 then
     
     task.defer(function()
        while wait() do
@@ -322,7 +332,9 @@ UI:Button("NUKE HUB", "Click Once only !", function()
 end)
 
 UI:Button("POOPDOORS EDITED ( Doors )", "Click Once only !", function()
-    loadstring(game:HttpGet(("https://raw.githubusercontent.com/mstudio45/poopdoors_edited/main/poopdoors_edited.lua"),true))()
+    if game.PlaceId == 6839171747 then
+        loadstring(game:HttpGet(("https://raw.githubusercontent.com/mstudio45/poopdoors_edited/main/poopdoors_edited.lua"),true))()
+    end
 end)
 
 UI:Button("Remove A-000 Door ( Doors )", "Click Once only !", function()
@@ -334,6 +346,7 @@ end
 end)
 
 UI:Button("Steep Steps Checkpoint ( Steep Steps )", "Click Once only !", function()
+    if game.PlaceId == 11606818992 then
         local npcs = game:GetService("Workspace").NPCs:GetChildren()
     local localPlayer = game.Players.LocalPlayer
     local HumanoidRootPart = localPlayer.Character.HumanoidRootPart
@@ -370,8 +383,11 @@ UI:Button("Steep Steps Checkpoint ( Steep Steps )", "Click Once only !", functio
         until 
             #localPlayer.Data.unlockedSpawnpoints.World1:GetChildren() > counter
     end
+    end
 end)
 
 UI:Button("SteepStepsACBypass ( Steep Steps )", "Click Once only !", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/lncoognito/ROBLOX/main/SteepStepsACBypass.lua", true))()
+    if game.PlaceId == 11606818992 then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/lncoognito/ROBLOX/main/SteepStepsACBypass.lua", true))()
+    end
 end)
