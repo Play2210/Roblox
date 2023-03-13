@@ -9,7 +9,7 @@ UI:Button("Anti AFK", "Click Once only !", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/2dgeneralspam1/scripts-and-stuff/master/scripts/LoadstringypVvhJBq4QNz", true))()
 end)
 
-UI:Button("Auto A-1000", "Click Once only !", function()
+UI:Button("Auto A-1000 ( Doors )", "Click Once only !", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Play2210/Roblox/main/Auto-A1000"))()
 end)
 
@@ -89,19 +89,19 @@ UI:Button("Click + Ctrl TP", "Click Once only !", function()
     })
 end)
 
-UI:Button("Doors Hardcore", "Click Once only !", function()
+UI:Button("Doors Hardcore ( Doors )", "Click Once only !", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/plamen6789/HardcoreScriptDOORS/main/HardcoreModeScript'))()
 end)
 
-UI:Button("Doors EntitySpawner", "Click Once only !", function()
+UI:Button("Doors EntitySpawner ( Doors )", "Click Once only !", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI'))()
 end)
 
-UI:Button("Doors TerminalVibes", "Click Once only !", function()
+UI:Button("Doors TerminalVibes ( Doors )", "Click Once only !", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Play2210/Roblox/main/OminousVibes-Exploit"))()
 end)
 
-UI:Button("Doors ACBypass", "Click Once only !", function()
+UI:Button("Doors ACBypass ( Doors )", "Click Once only !", function()
         if game.PlaceId == 6839171747 then
     
     task.defer(function()
@@ -187,7 +187,7 @@ UI:Button("Hitbox", "Click Once only !", function()
     end)
 end)
 
-UI:Button("Inf Rocket Deadmatch", "Click Once only !", function()
+UI:Button("Inf Rocket ( Super Doomspire )", "Click Once only !", function()
     hookfunction(time, function() return math.huge end)
 end)
 
@@ -321,11 +321,11 @@ UI:Button("NUKE HUB", "Click Once only !", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/NukeVsCity/TheALLHACKLoader/main/NukeLoader"))()
 end)
 
-UI:Button("POOPDOORS EDITED", "Click Once only !", function()
+UI:Button("POOPDOORS EDITED ( Doors )", "Click Once only !", function()
     loadstring(game:HttpGet(("https://raw.githubusercontent.com/mstudio45/poopdoors_edited/main/poopdoors_edited.lua"),true))()
 end)
 
-UI:Button("Remove A-000 Doors", "Click Once only !", function()
+UI:Button("Remove A-000 Door ( Doors )", "Click Once only !", function()
     for i, v in pairs(workspace.CurrentRooms:GetDescendants()) do
     if v.Name == "RoomsDoor_Entrance" then
         v.Door.EnterPrompt.Enabled = true
@@ -333,7 +333,7 @@ UI:Button("Remove A-000 Doors", "Click Once only !", function()
 end
 end)
 
-UI:Button("Steep Steps Checkpoint", "Click Once only !", function()
+UI:Button("Steep Steps Checkpoint ( Steep Steps )", "Click Once only !", function()
         local npcs = game:GetService("Workspace").NPCs:GetChildren()
     local localPlayer = game.Players.LocalPlayer
     local HumanoidRootPart = localPlayer.Character.HumanoidRootPart
@@ -372,6 +372,6 @@ UI:Button("Steep Steps Checkpoint", "Click Once only !", function()
     end
 end)
 
-UI:Button("SteepStepsACBypass", "Click Once only !", function()
+UI:Button("SteepStepsACBypass ( Steep Steps )", "Click Once only !", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/lncoognito/ROBLOX/main/SteepStepsACBypass.lua", true))()
 end)
