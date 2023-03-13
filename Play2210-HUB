@@ -123,7 +123,7 @@ UI:Button("Doors TerminalVibes ( Doors )", "Click Once only !", function()
     end
 end)
 
-UI:Button("Doors ACBypass ( Doors )", "Click Once only !", function()
+UI:Button("Doors ACBypass Void ( Doors )", "Click Once only !", function()
     if game.PlaceId == 6839171747 then
     
     task.defer(function()
@@ -136,6 +136,12 @@ UI:Button("Doors ACBypass ( Doors )", "Click Once only !", function()
     
     game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Disabled = true
     
+    end
+end)
+
+UI:Button("Doors ACBypass Die ( Doors )", "Click Once only !", function()
+    if game.PlaceId == 6839171747 then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ChronoAccelerator/Public-Scripts/main/DoorsBypasses/DoorsACBypass.lua",true))()
     end
 end)
 
