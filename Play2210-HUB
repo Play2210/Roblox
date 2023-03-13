@@ -1,5 +1,5 @@
-local Abstract = loadstring(game:HttpGet("https://raw.githubusercontent.com/Play2210/Roblox/main/AbstractUI"))()
-local UI = Abstract:Create("Play2210 HUB", UDim2.new(0, 420, 0, 450))
+local Abstract = loadstring(game:HttpGet("https://raw.githubusercontent.com/AbstractPoo/Main/AbstractUI/AbstractUI"))()
+local UI = Abstract:Create("Play2210", UDim2.new(0, 420, 0, 450))
 
 UI:Button("Animation", "Click Once only !", function()
     loadstring(game:HttpGet("https://gitlab.com/Tsuniox/lua-stuff/-/raw/master/R15GUI.lua"))()
@@ -195,6 +195,10 @@ UI:Button("Hitbox", "Click Once only !", function()
     end
     end
     end)
+end)
+
+UI:Button("Infinite Yield", "Click Once only !", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end)
 
 UI:Button("Inf Rocket ( Super Doomspire )", "Click Once only !", function()
