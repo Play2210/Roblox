@@ -16,8 +16,8 @@ UI:Button("Auto A-1000 ( Doors )", "Click Once only !", function()
 end)
 
 UI:Button("Inf Rocket ( Super Doomspire )", "Click Once only !", function()
-    if game.PlaceId == 11606818992 then
-        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/75e1a554d86dd6ecf1694d47cc9a09ce.lua"))()
+    if game.PlaceId == 3725149043 then
+        hookfunction(time, function() return math.huge end)
     end
 end)
 
