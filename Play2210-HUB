@@ -143,6 +143,25 @@ UI:Button("D4rkfcker HUB", "Click Once only !", function()
     loadstring(game:HttpGet('https://scripts.luawl.com/14640/D4rkfcker.lua'))()
 end)
 
+UI:Button("FullBright", "Click Once only !", function()
+    local Light = game:GetService("Lighting")
+
+    function dofullbright()
+    Light.Ambient = Color3.new(1, 1, 1)
+    Light.ColorShift_Bottom = Color3.new(1, 1, 1)
+    Light.ColorShift_Top = Color3.new(1, 1, 1)
+    end
+    
+    dofullbright()
+    
+    Light.LightingChanged:Connect(dofullbright)
+    game.StarterGui:SetCore("SendNotification", {
+    Title = "FullBright by Khánh Nè";
+    Text = "FullBright";
+    Duration = "15";
+    })
+end)
+
 UI:Button("Flight", "Click Once only !", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/kodescripts/scripts/main/Flight.lua"))()
 end)
