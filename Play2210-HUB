@@ -21,6 +21,12 @@ UI:Button("Inf Rocket ( Super Doomspire )", "Click Once only !", function()
     end
 end)
 
+UI:Button("VAPE ( BedWars )", "Click Once only !", function()
+    if game.PlaceId == 6872265039 then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua", true))()
+    end
+end)
+
 UI:Button("BioHazard ( Bee Swarm Simulator )", "Click Once only !", function()
     if game.PlaceId == 1537690962 then
         loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/75e1a554d86dd6ecf1694d47cc9a09ce.lua"))()
