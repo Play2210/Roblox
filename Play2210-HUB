@@ -105,6 +105,12 @@ UI:Button("Click + Ctrl TP", "Click Once only !", function()
     })
 end)
 
+UI:Button("DarkCyber2.0 ( Bee Swarm Simulator )", "Click Once only !", function()
+    if game.PlaceId == 1537690962 then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/arktzyt/test/main/DarkCyber2.0"))()
+    end
+end)
+
 UI:Button("Doors Hardcore ( Doors )", "Click Once only !", function()
     if game.PlaceId == 6839171747 then
         loadstring(game:HttpGet('https://raw.githubusercontent.com/plamen6789/HardcoreScriptDOORS/main/HardcoreModeScript'))()
@@ -336,6 +342,12 @@ UI:Button("Infinity Jump", "Click Once only !", function()
     end
     end
     coroutine.wrap(TKDWQ_fake_script)()
+end)
+
+UI:Button("Kocmoc ( Bee Swarm Simulator )", "Click Once only !", function()
+    if game.PlaceId == 1537690962 then
+        loadstring(game:HttpGet"https://raw.githubusercontent.com/Boxking776/kocmoc/main/kocmoc-remastered.lua")()
+    end
 end)
 
 UI:Button("Lazium HUB", "Click Once only !", function()
