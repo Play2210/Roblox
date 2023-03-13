@@ -1,0 +1,377 @@
+local Abstract = loadstring(game:HttpGet("https://raw.githubusercontent.com/AbstractPoo/Main/AbstractUI/AbstractUI"))()
+local UI = Abstract:Create("Play2210", UDim2.new(0, 420, 0, 450))
+
+UI:Button("Animation", "Click Once only !", function()
+    loadstring(game:HttpGet("https://gitlab.com/Tsuniox/lua-stuff/-/raw/master/R15GUI.lua"))()
+end)
+
+UI:Button("Anti AFK", "Click Once only !", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/2dgeneralspam1/scripts-and-stuff/master/scripts/LoadstringypVvhJBq4QNz", true))()
+end)
+
+UI:Button("Auto A-1000", "Click Once only !", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Play2210/Roblox/main/Auto-A1000"))()
+end)
+
+UI:Button("Bring All ( Flag Wars )", "Click Once only !", function()
+    local currPlayer = game:GetService("Players").LocalPlayer
+        local servPlayer = game:GetService("Players")
+        
+        local teams = game:GetService("Teams")
+        
+        function isSameTeam(player)
+            if player.team ~= currPlayer.team and player.team ~= teams["Neutral"] then
+                return false
+            else
+                return true
+            end
+        end
+        
+        while task.wait() do
+        for _, v in next, servPlayer:GetPlayers() do
+            if v ~= currPlayer and not isSameTeam(v) then
+                print(v)
+                v.Character.HumanoidRootPart.CFrame = currPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(2.2,0.5,-6)
+            end
+        end
+        end
+end)
+
+UI:Button("Click TP Tool", "Click Once only !", function()
+        mouse = game.Players.LocalPlayer:GetMouse()
+    tool = Instance.new("Tool")
+    tool.RequiresHandle = false
+    tool.Name = "Click Teleport"
+    tool.Activated:connect(function()
+    local pos = mouse.Hit+Vector3.new(0,2.5,0)
+    pos = CFrame.new(pos.X,pos.Y,pos.Z)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+    end)
+    tool.Parent = game.Players.LocalPlayer.Backpack
+end)
+
+UI:Button("Click + Ctrl TP", "Click Once only !", function()
+        local Player = game.Players.LocalPlayer
+    local Mouse = Player:GetMouse()
+    local UserInputService = game:GetService('UserInputService')
+     
+    local HoldingControl = false
+     
+    Mouse.Button1Down:connect(function()
+    if HoldingControl then
+    Player.Character:MoveTo(Mouse.Hit.p)
+    end
+    end)
+     
+    UserInputService.InputBegan:connect(function(Input, Processed)
+    if Input.UserInputType == Enum.UserInputType.Keyboard then
+    if Input.KeyCode == Enum.KeyCode.LeftControl then
+    HoldingControl = true
+    elseif Input.KeyCode == Enum.KeyCode.RightControl then
+    HoldingControl = true 
+    end
+    end
+    end)
+     
+    UserInputService.InputEnded:connect(function(Input, Processed)
+    if Input.UserInputType == Enum.UserInputType.Keyboard then
+    if Input.KeyCode == Enum.KeyCode.LeftControl then
+    HoldingControl = false
+    elseif Input.KeyCode == Enum.KeyCode.RightControl then
+    HoldingControl = false
+    end
+    end
+    end)
+    game.StarterGui:SetCore("SendNotification", {
+    Title = "Teleport by Khánh Nhân Phẩm";
+    Text = "Giữ Ctrl và click chuột để Teleport";
+    Duration = "20";
+    })
+end)
+
+UI:Button("Doors Hardcore", "Click Once only !", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/plamen6789/HardcoreScriptDOORS/main/HardcoreModeScript'))()
+end)
+
+UI:Button("Doors EntitySpawner", "Click Once only !", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI'))()
+end)
+
+UI:Button("Doors TerminalVibes", "Click Once only !", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Play2210/Roblox/main/OminousVibes-Exploit"))()
+end)
+
+UI:Button("Doors ACBypass", "Click Once only !", function()
+        if game.PlaceId == 6839171747 then
+    
+    task.defer(function()
+       while wait() do
+           pcall(function()
+               workspace.CurrentRooms["0"].StarterElevator.DoorHitbox:Destroy()
+           end)
+       end
+    end)
+    
+    game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener.Disabled = true
+    
+    end
+end)
+
+UI:Button("D4rkfcker HUB", "Click Once only !", function()
+    loadstring(game:HttpGet('https://scripts.luawl.com/14640/D4rkfcker.lua'))()
+end)
+
+UI:Button("Flight", "Click Once only !", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/kodescripts/scripts/main/Flight.lua"))()
+end)
+
+UI:Button("Hitbox", "Click Once only !", function()
+    game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Enjoy", Text = "w = Enabled : p = disabled."})
+    local player = game.Players.LocalPlayer
+    local mouse = player:GetMouse()
+    
+    -- Settings
+    
+    bind = ""
+    bind2 = "w"
+    bind3 = "p"
+    
+    -- Script
+    
+    mouse.KeyDown:connect(function(key)
+    if key == bind then
+    player.Character.HumanoidRootPart.CFrame = CFrame.new(1254.09656, 137.906067, -172.128204)
+    end
+    end)
+    
+    mouse.KeyDown:connect(function(key2)
+    if key2 == bind2 then
+    _G.HeadSize = 20
+    _G.Disabled = true
+    
+    
+    if _G.Disabled then
+    for i,v in next, game:GetService('Players'):GetPlayers() do
+    if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+    pcall(function()
+    v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+    v.Character.HumanoidRootPart.Transparency = 0.7
+    v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Bright red")
+    v.Character.HumanoidRootPart.Material = "Neon"
+    v.Character.HumanoidRootPart.CanCollide = false
+    end)
+    end
+    end
+    end
+    end
+    end)
+    
+    mouse.KeyDown:connect(function(key3)
+    if key3 == bind3 then
+    _G.HeadSize = 20
+    _G.Disabled = true
+    
+    
+    for i,v in next, game:GetService('Players'):GetPlayers() do
+    if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+    pcall(function()
+    v.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
+    v.Character.HumanoidRootPart.Transparency = 1
+    v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Medium stone grey")
+    v.Character.HumanoidRootPart.Material = "Plastic"
+    v.Character.HumanoidRootPart.CanCollide = false
+    end)
+    end
+    end
+    end
+    end)
+end)
+
+UI:Button("Inf Rocket Deadmatch", "Click Once only !", function()
+    hookfunction(time, function() return math.huge end)
+end)
+
+UI:Button("Infinity Jump", "Click Once only !", function()
+    -- Instances:
+    
+    local ScreenGui = Instance.new("ScreenGui")
+    local main = Instance.new("Frame")
+    local TextLabel = Instance.new("TextLabel")
+    local Frame = Instance.new("Frame")
+    local INFJUMP = Instance.new("TextButton")
+    local TextLabel_2 = Instance.new("TextLabel")
+    
+    --Properties:
+    
+    ScreenGui.Parent = game.CoreGui
+    
+    main.Name = "main"
+    main.Parent = ScreenGui
+    main.Active = true
+    main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    main.BorderSizePixel = 0
+    main.Position = UDim2.new(0.119258665, 0, 0, 0)
+    main.Size = UDim2.new(0, 146, 0, 28)
+    main.Active = true
+    main.Draggable = false
+    
+    TextLabel.Parent = main
+    TextLabel.BackgroundColor3 = Color3.fromRGB(38, 38, 38)
+    TextLabel.BorderSizePixel = 0
+    TextLabel.Size = UDim2.new(0, 146, 0, 28)
+    TextLabel.Font = Enum.Font.SciFi
+    TextLabel.Text = "Misc"
+    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.TextSize = 17.000
+    TextLabel.TextWrapped = true
+    
+    Frame.Parent = main
+    Frame.BackgroundColor3 = Color3.fromRGB(86, 86, 86)
+    Frame.BorderSizePixel = 0
+    Frame.Position = UDim2.new(0, 0, 1, 0)
+    Frame.Size = UDim2.new(0, 146, 0, 61)
+    
+    INFJUMP.Name = "INFJUMP"
+    INFJUMP.Parent = main
+    INFJUMP.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    INFJUMP.BorderSizePixel = 0
+    INFJUMP.Position = UDim2.new(0.794520497, 0, 1.6785717, 0)
+    INFJUMP.Size = UDim2.new(0, 21, 0, 21)
+    INFJUMP.Font = Enum.Font.SourceSans
+    INFJUMP.Text = ""
+    INFJUMP.TextColor3 = Color3.fromRGB(0, 0, 0)
+    INFJUMP.TextSize = 14.000
+    INFJUMP.MouseButton1Down:connect(function()
+    local Player = game:GetService'Players'.LocalPlayer;
+    local UIS = game:GetService'UserInputService';
+     
+    _G.JumpHeight = 50;
+     
+    function Action(Object, Function) if Object ~= nil then Function(Object); end end
+     
+    UIS.InputBegan:connect(function(UserInput)
+        if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space then
+            Action(Player.Character.Humanoid, function(self)
+                if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+                    Action(self.Parent.HumanoidRootPart, function(self)
+                        self.Velocity = Vector3.new(0, _G.JumpHeight, 0);
+                    end)
+                end
+            end)
+        end
+    end)
+    end)
+    
+    TextLabel_2.Parent = main
+    TextLabel_2.BackgroundColor3 = Color3.fromRGB(38, 38, 38)
+    TextLabel_2.BorderSizePixel = 0
+    TextLabel_2.Position = UDim2.new(0.0547945201, 0, 1.57142854, 0)
+    TextLabel_2.Size = UDim2.new(0, 94, 0, 28)
+    TextLabel_2.Font = Enum.Font.SciFi
+    TextLabel_2.Text = "Inf jump"
+    TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel_2.TextSize = 17.000
+    TextLabel_2.TextWrapped = true
+    
+    -- Scripts:
+    
+    local function TKDWQ_fake_script() -- INFJUMP.LocalScript 
+    local script = Instance.new('LocalScript', INFJUMP)
+    
+    function zigzag(X) return math.acos(math.cos(X*math.pi))/math.pi end
+    
+    counter = 0
+    
+    while wait(0.1)do
+    script.Parent.BackgroundColor3 = Color3.fromHSV(zigzag(counter),1,1)
+     
+    counter = counter + 0.01
+    end
+    end
+    coroutine.wrap(TKDWQ_fake_script)()
+end)
+
+UI:Button("Lazium HUB", "Click Once only !", function()
+    loadstring(game:HttpGet"https://raw.githubusercontent.com/CheapeeWastaken/Lazium/main/TheMain")()
+end)
+
+UI:Button("No Clip", "Click Once only !", function()
+        noclip = false
+    game:GetService('RunService').Stepped:connect(function()
+    if noclip then
+    game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+    end
+    end)
+    plr = game.Players.LocalPlayer
+    mouse = plr:GetMouse()
+    mouse.KeyDown:connect(function(key)
+    if key == "e" then
+    noclip = not noclip
+    game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+    end
+    end)
+    game.StarterGui:SetCore("SendNotification", {
+    Title = "Noclip by Khánh Nhân Phẩm";
+    Text = "Nhấn E Để Noclip";
+    Duration = "20";
+    })
+end)
+
+UI:Button("NUKE HUB", "Click Once only !", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/NukeVsCity/TheALLHACKLoader/main/NukeLoader"))()
+end)
+
+UI:Button("POOPDOORS EDITED", "Click Once only !", function()
+    loadstring(game:HttpGet(("https://raw.githubusercontent.com/mstudio45/poopdoors_edited/main/poopdoors_edited.lua"),true))()
+end)
+
+UI:Button("Remove A-000 Doors", "Click Once only !", function()
+    for i, v in pairs(workspace.CurrentRooms:GetDescendants()) do
+    if v.Name == "RoomsDoor_Entrance" then
+        v.Door.EnterPrompt.Enabled = true
+    end
+end
+end)
+
+UI:Button("Steep Steps Checkpoint", "Click Once only !", function()
+        local npcs = game:GetService("Workspace").NPCs:GetChildren()
+    local localPlayer = game.Players.LocalPlayer
+    local HumanoidRootPart = localPlayer.Character.HumanoidRootPart
+    local camps = {}
+    local originAltitude = tonumber(localPlayer.Altitude.Value)
+    for i, v in pairs(npcs) do
+        if v.Name == "Spawnpoint" then
+            table.insert(camps, v.Interact)
+        end
+    end
+    local temp
+    for i = 1, #camps do
+        for j = 1, #camps do
+            if camps[i].Position.Y < camps[j].Position.Y then
+                temp = camps[i]
+                camps[i] = camps[j]
+                camps[j] = temp
+            end
+        end
+    end
+    for i, v in pairs(camps) do
+        print(v.Position.Y)
+    end
+    local unlockedCamps = #localPlayer.Data.unlockedSpawnpoints.World1:GetChildren()
+    for i = unlockedCamps+1, #camps do --if you want to claim only the last checkpoint for autofarm just replace unlockedCamps+1 to #camps
+        local counter = #localPlayer.Data.unlockedSpawnpoints.World1:GetChildren()
+        local currentAltitude = tonumber(localPlayer.Altitude.Value)
+        repeat
+            HumanoidRootPart.CFrame = camps[i].CFrame
+            if tonumber(localPlayer.Altitude.Value) > currentAltitude then
+                fireclickdetector(camps[i].talk)
+            end
+            wait()
+        until 
+            #localPlayer.Data.unlockedSpawnpoints.World1:GetChildren() > counter
+    end
+end)
+
+UI:Button("SteepStepsACBypass", "Click Once only !", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/lncoognito/ROBLOX/main/SteepStepsACBypass.lua", true))()
+end)
