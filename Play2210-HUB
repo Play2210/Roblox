@@ -198,7 +198,9 @@ UI:Button("Hitbox", "Click Once only !", function()
 end)
 
 UI:Button("Inf Rocket ( Super Doomspire )", "Click Once only !", function()
-    hookfunction(time, function() return math.huge end)
+    if game.PlaceId == 3725149043 then
+        hookfunction(time, function() return math.huge end)
+    end
 end)
 
 UI:Button("Infinity Jump", "Click Once only !", function()
